@@ -5,7 +5,7 @@ const SECOND_API_URL = 'https://fakerapi.it/api/v1';
 
 export const getPosts = async () => {
   try {
-    const res = await axios.get(`${FIRST_API_URL}/posts/101`, { 
+    const res = await axios.get(`${FIRST_API_URL}/posts/10`, { 
       params: { ofset: 0, limit: 10 },
       headers: {
         Authorizarion: `Bearer ${localStorage.getItem('token')}`
@@ -34,14 +34,23 @@ export const getPosts = async () => {
 
 export const createPosts = async () => {
   const res = await axios.post(`${FIRST_API_URL}/posts`, 
-    /*headers: {
-      Authorizarion: `Bearer ${localStorage.getItem('token')}`
-    },*/
     {
       body: 'gsdfg',
-      title: 'sdkjfhksdhfksdfhkshdfkh'
+      title: 'sdkjfhksdhfksdfhkshdfkh',
     }, {
-      params: {offset: 0}
+      params: {offset: 0},
+      headers: {
+        Authorizarion: `Bearer ${localStorage.getItem('token')}`
+      },
     }
+  )
+}
+
+export const deletePosts = async () => {
+  const res = await axios.delete(`${FIRST_API_URL}/posts/1`, {
+    headers: {
+      Authorizarion: `Bearer ${localStorage.getItem('token')}`,
+    },
+  }
   )
 }

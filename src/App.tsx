@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { getPosts, createPosts } from './api/requests';
+import { getPosts, createPosts, deletePosts } from './api/requests';
 
 function App() {
 
@@ -9,6 +9,7 @@ function App() {
     //getPosts.then(res => console.log(res)).catch(err => console.log(err));
     getPosts();
     createPosts();
+    deletePosts();
     //console.log(getPosts());
   }, [])
 
