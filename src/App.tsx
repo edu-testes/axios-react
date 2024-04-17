@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { getPosts } from './api/requests';
+import { getPosts, createPosts } from './api/requests';
 
 function App() {
 
   useEffect(() => {
-    getPosts.then(res => console.log(res)).catch(err => console.log(err));
+    //getPosts.then(res => console.log(res)).catch(err => console.log(err));
+    getPosts();
+    createPosts();
+    //console.log(getPosts());
   }, [])
 
   return (
