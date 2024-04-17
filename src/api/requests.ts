@@ -3,15 +3,17 @@ import axios from "axios";
 const FIRST_API_URL = 'https://jsonplaceholder.typicode.com';
 const SECOND_API_URL = 'https://fakerapi.it/api/v1';
 
+axios.defaults.baseURL = FIRST_API_URL;
+axios.defaults.headers.common = {
+  Authorizarion: `Bearer ${localStorage.getItem('token')}`,
+}
+axios.defaults.withCredentials = true;
+
 export const getPosts = async () => {
   try {
-    const res = await axios.get(`${FIRST_API_URL}/posts/10`, { 
+    const res = await axios.get(`/posts/10`, { 
       params: { ofset: 0, limit: 10 },
-      headers: {
-        Authorizarion: `Bearer ${localStorage.getItem('token')}`
-      },
       //timeout: 1,
-      withCredentials: true, // send cookies with "http only" parameters
       // Use with GET requests
       onDownloadProgress: function(progressEvent) {
         console.log(progressEvent, 'first');
@@ -33,24 +35,17 @@ export const getPosts = async () => {
 }
 
 export const createPosts = async () => {
-  const res = await axios.post(`${FIRST_API_URL}/posts`, 
+  const res = await axios.post(`/posts`, 
     {
       body: 'gsdfg',
       title: 'sdkjfhksdhfksdfhkshdfkh',
     }, {
       params: {offset: 0},
-      headers: {
-        Authorizarion: `Bearer ${localStorage.getItem('token')}`
-      },
     }
   )
 }
 
 export const deletePosts = async () => {
-  const res = await axios.delete(`${FIRST_API_URL}/posts/1`, {
-    headers: {
-      Authorizarion: `Bearer ${localStorage.getItem('token')}`,
-    },
-  }
+  const res = await axios.delete(`/posts/1`, { }
   )
 }
