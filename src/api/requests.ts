@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export const getPostsController = new AbortController();
 
@@ -27,8 +27,15 @@ const secondApiAxios = axios.create({
 });
 
 
+type Post = {
+  id: string,
+  userId: string, 
+  title: string,
+  body: string
+}
+
 export const getPosts = async () => {
-  const res = await firstApiAxios.get(`/posts/10`, {
+  const res = await firstApiAxios.get<Post>(`/posts/10`, {
     params: { ofset: 0, limit: 10 },
     signal: getPostsController.signal,
     //timeout: 1,
@@ -45,8 +52,10 @@ export const getPosts = async () => {
 }
 
 export const createPosts = async () => {
-  const res = await firstApiAxios.post(`/posts`,
+  const res = await firstApiAxios.post<Post>(`/posts/1`,
     {
+      id: '1',
+      userId: 'fs',
       body: 'gsdfg',
       title: 'sdkjfhksdhfksdfhkshdfkh',
     }, {
