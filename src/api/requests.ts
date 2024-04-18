@@ -3,7 +3,7 @@ import axios from "axios";
 const FIRST_API_URL = 'https://jsonplaceholder.typicode.com';
 const SECOND_API_URL = 'https://catfact.ninja';
 
-const firstApiAxios  = axios.create({
+const firstApiAxios = axios.create({
   baseURL: FIRST_API_URL,
   headers: {
     Authorizarion: `Bearer ${localStorage.getItem('token')}`,
@@ -12,7 +12,7 @@ const firstApiAxios  = axios.create({
 });
 
 
-const secondApiAxios  = axios.create({
+const secondApiAxios = axios.create({
   //baseURL: FIRST_API_URL,
   baseURL: SECOND_API_URL,
   headers: {
@@ -26,38 +26,29 @@ const secondApiAxios  = axios.create({
 
 
 export const getPosts = async () => {
-  try {
-    const res = await firstApiAxios.get(`/posts/10`, { 
-      params: { ofset: 0, limit: 10 },
-      //timeout: 1,
-      // Use with GET requests
-      onDownloadProgress: function(progressEvent) {
-        //console.log(progressEvent, 'first');
-      },
-      // Use with POST, PUT requests
-      /*onUploadProgress: function(progressEvent) {
-        console.log('first');
-      }*/
-    });
-    return res;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log(error, 'err');
-      console.log(error.response?.data.errText, 'error');
-    } else if (error instanceof Error) {
-      console.log(error.message);
-    }
-  }
+  const res = await firstApiAxios.get(`/posts/10`, {
+    params: { ofset: 0, limit: 10 },
+    //timeout: 1,
+    // Use with GET requests
+    onDownloadProgress: function (progressEvent) {
+      //console.log(progressEvent, 'first');
+    },
+    // Use with POST, PUT requests
+    /*onUploadProgress: function(progressEvent) {
+      console.log('first');
+    }*/
+  });
+  return res;
 }
 
 export const createPosts = async () => {
-  const res = await firstApiAxios.post(`/posts`, 
+  const res = await firstApiAxios.post(`/posts`,
     {
       body: 'gsdfg',
       title: 'sdkjfhksdhfksdfhkshdfkh',
     }, {
-      params: {offset: 0},
-    }
+    params: { offset: 0 },
+  }
   )
 }
 
@@ -66,10 +57,31 @@ export const deletePosts = async () => {
 }
 
 export const getCats = async () => {
-  try {
-    const res = await secondApiAxios.get('/breeds');
-    return res;
-  } catch (error) {
+  const res = await secondApiAxios.get('/breeds');
+  return res;
+}
+
+firstApiAxios.interceptors.response.use(
+  (res) => { console.log(res.status, 'int res'); return res; },
+  (error) => {
+    if (axios.isAxiosError(error)) {
+      // Refresh token
+      /*
+      if (error.status === 401 && token) {
+        const { data } = axios.post('/url/auth', { refreshToken: token })
+        localStorage.set(data, 'token');
+      }*/
+      console.log(error, 'err');
+      console.log(error.response?.data.errText, 'error');
+    } else if (error instanceof Error) {
+      console.log(error.message);
+    }
+  }
+)
+
+firstApiAxios.interceptors.request.use(
+  (config) => { return config; },
+  (error) => {
     if (axios.isAxiosError(error)) {
       console.log(error, 'err');
       console.log(error.response?.data.errText, 'error');
@@ -77,5 +89,17 @@ export const getCats = async () => {
       console.log(error.message);
     }
   }
-}
+)
 
+
+secondApiAxios.interceptors.response.use(
+  (res) => { console.log(res.status, 'int res'); return res; },
+  (error) => {
+    if (axios.isAxiosError(error)) {
+      console.log(error, 'err');
+      console.log(error.response?.data.errText, 'error');
+    } else if (error instanceof Error) {
+      console.log(error.message);
+    }
+  }
+)
