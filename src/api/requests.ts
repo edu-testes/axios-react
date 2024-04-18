@@ -1,5 +1,7 @@
 import axios from "axios";
 
+export const getPostsController = new AbortController();
+
 const FIRST_API_URL = 'https://jsonplaceholder.typicode.com';
 const SECOND_API_URL = 'https://catfact.ninja';
 
@@ -28,6 +30,7 @@ const secondApiAxios = axios.create({
 export const getPosts = async () => {
   const res = await firstApiAxios.get(`/posts/10`, {
     params: { ofset: 0, limit: 10 },
+    signal: getPostsController.signal,
     //timeout: 1,
     // Use with GET requests
     onDownloadProgress: function (progressEvent) {

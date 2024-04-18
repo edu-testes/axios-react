@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { getPosts, createPosts, deletePosts, getCats } from './api/requests';
+import { getPosts, createPosts, deletePosts, getCats, getPostsController } from './api/requests';
 
 function App() {
 
   useEffect(() => {
     getPosts();
+    getPostsController.abort();
     createPosts();
     deletePosts();
     getCats();
